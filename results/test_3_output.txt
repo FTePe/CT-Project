@@ -1,2 +1,2 @@
-Mean value is of middle part of reconstructed is 2.8786000931050464
+Mean value is of middle part of reconstructed is 2.895078372735872
 Mean value is of middle part of phantom is 2.0

@@ -17,14 +17,15 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	# length (has to be the same as in ct_scan.py)
 
 	n = sinogram.shape[1]
-	angles = sinogram.shape[0]
 
-	phantom_air = d = ct_phantom(material.name, n, 9) #added type, with the single point attenuator of tissue replaced with air
-
-	sinogram_air = ct_scan(photons, material, phantom_air, scale, angles)
-
+	# work out value of a sinogram point of air
+	v = ct_detect(photons, material.coeff('Air'), 2*n*scale,1)[0]
+	
+	# construct sinogram of air
+	sinogram_air = v * np.ones(sinogram.shape)
+	
+	# perform calibration
 	sinogram = -np.log( np.divide(sinogram, sinogram_air))
 
-	# perform calibration
 
 	return sinogram
