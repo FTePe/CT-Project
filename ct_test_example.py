@@ -18,7 +18,7 @@ source = Source()
 # all the output should be saved in a 'results' directory
 
 def test_1():
-	# explain what this test is for
+	# For this test, view the plots and compare visually that they have similar geometry
 
 	# work out what the initial conditions should be
 	p = ct_phantom(material.name, 256, 3)
@@ -30,11 +30,9 @@ def test_1():
 	save_draw(p, 'results', 'test_1_phantom')
 	plt.close()
 
-	# how to check whether these results are actually correct?
-	# ANS : Need to display them side by side and you can check that they look geometrically similar
-
 def test_2():
-	# explain what this test is for
+	# This test compares the data values on the 128th row of the phantom and the
+	# reconstructed image for the point impulse phantom
 
 	# work out what the initial conditions should be
 	p = ct_phantom(material.name, 256, 2)
@@ -54,10 +52,10 @@ def test_2():
 	plt.savefig('results/test_2_plot')
 	plt.close()
 
-	# how to check whether these results are actually correct?
 
 def test_3():
-	# explain what this test is for
+	# This test compares the mean value of the central area of pixels between the 
+	# phantom and the reconstructed image for the point impule phantom
 
 	# work out what the initial conditions should be
 	p = ct_phantom(material.name, 256, 1)
@@ -71,10 +69,10 @@ def test_3():
 	f.write('Mean value is of middle part of phantom is ' + str(np.mean(p[64:192, 64:192])))
 	f.close()
 
-	# how to check whether these results are actually correct?
 
 def test_4():
-	# explain what this test is for
+	# This test compares the data values for the phantom and reconstructed image across 
+	# the 128th row of pixels - type 6 phantom
 
 	# work out what the initial conditions should be
 	p = ct_phantom(material.name, 256, 6)
@@ -82,20 +80,8 @@ def test_4():
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
 
 	# save some meaningful results
-	
-	# first let's look at the raw values 
-	plt.plot(y[127, :])
-	plt.plot(p[127, :])
-	plt.title('Comparing the data values on the 128th row')
-	plt.legend(['Reconstruced', 'Phantom'])
-	plt.ylabel('Data value')
-	plt.xlabel('Sample')
-	#plt.show()
-	plt.savefig('results/test_4_plot')
-	plt.close()
 
-
-	# now let's compare the values when we scale the matrices to the same range
+	# let's compare the values when we scale to the same range
 	y_scaled = y[127, :]
 	y_scaled = np.interp(y_scaled, (y_scaled.min(), y_scaled.max()), (-1, +10))
 
@@ -111,8 +97,6 @@ def test_4():
 	#plt.show()
 	plt.savefig('results/test_4_plot_scaled')
 	plt.close()
-
-	# how to check whether these results are actually correct?
 
 
 # Run the various tests
