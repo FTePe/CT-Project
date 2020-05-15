@@ -26,20 +26,9 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	ramlak = np.abs(np.linspace(-w_max, w_max, m))
 	
 
-	"""
-
-	# apply filter to all angles
-
-	print('Ramp filtering')
-
-	filtered = np.zeros((angles, n))
-	for angle in range(angles):
-		y = ifft(ramlak)
-		filtered[angle] = np.convolve(y, sinogram[angle])
-
-	"""
 	filtered = np.zeros((angles, n))
 	
+	# implementing the filtering
 	for angle in range(angles):
 
 		signal = sinogram[angle]
@@ -48,14 +37,14 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 		signal = np.pad(signal, (0, 2*padding), constant_values = (0,0))
 
 		f = fft(signal)
-		f = fftshift(f)
+		f = fftshift(f)		# fftshift needed to centre the frequencies
 
 		f = np.multiply(f, ramlak)
 
 		f = ifftshift(f)
 		f = ifft(f)
 
-		filtered[angle] = f[:-2*padding]
+		filtered[angle] = f[:-2*padding]	# don't consider the extra values at the end 
 
 
 	sinogram = filtered
