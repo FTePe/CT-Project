@@ -28,6 +28,7 @@ def test_1():
 	# save some meaningful results
 	save_draw(y, 'results', 'test_1_image')
 	save_draw(p, 'results', 'test_1_phantom')
+	plt.close()
 
 	# how to check whether these results are actually correct?
 	# ANS : Need to display them side by side and you can check that they look geometrically similar
@@ -51,6 +52,7 @@ def test_2():
 	plt.xlabel('Sample')
 	#plt.show()
 	plt.savefig('results/test_2_plot')
+	plt.close()
 
 	# how to check whether these results are actually correct?
 
@@ -115,10 +117,10 @@ def test_4():
 
 # Run the various tests
 print('Test 1')
-#test_1()
+test_1()
 print('Test 2')
-#test_2()
+test_2()
 print('Test 3')
-#test_3()
+test_3()
 print('Test 4')
 test_4()
