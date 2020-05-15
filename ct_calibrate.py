@@ -1,8 +1,8 @@
 import numpy as np
 import scipy
 from scipy import interpolate
-from ct_phantom import *
-from ct_scan import *
+from ct_detect import ct_detect
+
 
 def ct_calibrate(photons, material, sinogram, scale, correct=True):
 
@@ -15,7 +15,6 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 
 	# Get dimensions and work out detection for just air of twice the side
 	# length (has to be the same as in ct_scan.py)
-
 	n = sinogram.shape[1]
 
 	# work out value of a sinogram point of air

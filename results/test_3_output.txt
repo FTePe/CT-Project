@@ -1,2 +1,6 @@
+<<<<<<< HEAD
 Mean value is of middle part of reconstructed is 2.895078372735872
 Mean value is of middle part of phantom is 2.0
+=======
+Mean value is 2.0
+>>>>>>> 1e625e8cf4552ca24a7c9bfc69743206ef74bb37
