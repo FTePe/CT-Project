@@ -30,6 +30,7 @@ def test_1():
 	save_draw(p, 'results', 'test_1_phantom')
 
 	# how to check whether these results are actually correct?
+	# ANS : Need to display them side by side and you can check that they look geometrically similar
 
 def test_2():
 	# explain what this test is for
@@ -40,7 +41,16 @@ def test_2():
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
 
 	# save some meaningful results
-	save_plot(y[128,:], 'results', 'test_2_plot')
+	#save_plot(y[128,:], 'results', 'test_2_plot')
+	
+	plt.plot(y[127, :])
+	plt.plot(p[127, :])
+	plt.title('Comparing the data values on the 128th row')
+	plt.legend(['Reconstruced', 'Phantom'])
+	plt.ylabel('Data value')
+	plt.xlabel('Sample')
+	#plt.show()
+	plt.savefig('results/test_2_plot')
 
 	# how to check whether these results are actually correct?
 
@@ -54,8 +64,32 @@ def test_3():
 
 	# save some meaningful results
 	f = open('results/test_3_output.txt', mode='w')
-	f.write('Mean value is ' + str(np.mean(y[64:192, 64:192])))
+	f.write('Mean value is of middle part of reconstructed is ' + str(np.mean(y[64:192, 64:192])))
+	f.write("\n")
+	f.write('Mean value is of middle part of phantom is ' + str(np.mean(p[64:192, 64:192])))
 	f.close()
+
+	# how to check whether these results are actually correct?
+
+def test_4():
+	# explain what this test is for
+
+	# work out what the initial conditions should be
+	p = ct_phantom(material.name, 256, 6)
+	s = source.photon('80kVp, 2mm Al')
+	y = scan_and_reconstruct(s, material, p, 0.01, 256)
+
+	# save some meaningful results
+	#save_plot(y[128,:], 'results', 'test_2_plot')
+	
+	plt.plot(y[127, :])
+	plt.plot(p[127, :])
+	plt.title('Comparing the data values on the 128th row')
+	plt.legend(['Reconstruced', 'Phantom'])
+	plt.ylabel('Data value')
+	plt.xlabel('Sample')
+	#plt.show()
+	plt.savefig('results/test_4_plot')
 
 	# how to check whether these results are actually correct?
 
@@ -67,3 +101,5 @@ print('Test 2')
 test_2()
 print('Test 3')
 test_3()
+print('Test 4')
+test_4()
