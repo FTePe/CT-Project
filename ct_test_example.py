@@ -80,8 +80,8 @@ def test_4():
 	y = scan_and_reconstruct(s, material, p, 0.01, 256)
 
 	# save some meaningful results
-	#save_plot(y[128,:], 'results', 'test_2_plot')
 	
+	# first let's look at the raw values 
 	plt.plot(y[127, :])
 	plt.plot(p[127, :])
 	plt.title('Comparing the data values on the 128th row')
@@ -90,16 +90,35 @@ def test_4():
 	plt.xlabel('Sample')
 	#plt.show()
 	plt.savefig('results/test_4_plot')
+	plt.close()
+
+
+	# now let's compare the values when we scale the matrices to the same range
+	y_scaled = y[127, :]
+	y_scaled = np.interp(y_scaled, (y_scaled.min(), y_scaled.max()), (-1, +10))
+
+	p_scaled = p[127, :]
+	p_scaled = np.interp(p_scaled, (p_scaled.min(), p_scaled.max()), (-1, +10))
+	
+	plt.plot(y_scaled)
+	plt.plot(p_scaled)
+	plt.title('Comparing the data values on the 128th row - Scaled')
+	plt.legend(['Reconstruced', 'Phantom'])
+	plt.ylabel('Data value')
+	plt.xlabel('Sample')
+	#plt.show()
+	plt.savefig('results/test_4_plot_scaled')
+	plt.close()
 
 	# how to check whether these results are actually correct?
 
 
 # Run the various tests
 print('Test 1')
-test_1()
+#test_1()
 print('Test 2')
-test_2()
+#test_2()
 print('Test 3')
-test_3()
+#test_3()
 print('Test 4')
 test_4()
