@@ -44,23 +44,18 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 
 		signal = sinogram[angle]
 		padding = int((m-n)/2)     # padding the signal
-		signal = np.pad(signal, (padding, padding), constant_values = (0,0))
+
+		signal = np.pad(signal, (0, 2*padding), constant_values = (0,0))
 
 		f = fft(signal)
 		f = fftshift(f)
 
-		#freqs = fftfreq(len(f)) #* scale   # assuming scale is the sampling frequency?
-		#freqs = fftshift(freqs)
-		
-		#f = np.multiply(f, np.abs(freqs))/(2*np.pi)
-
-		#f = np.pad(f, (128, 128), constant_values = (0, 0))
 		f = np.multiply(f, ramlak)
 
 		f = ifftshift(f)
 		f = ifft(f)
 
-		filtered[angle] = f[padding:-padding]
+		filtered[angle] = f[:-2*padding]
 
 
 	sinogram = filtered
