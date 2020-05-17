@@ -22,7 +22,9 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 
 	
 	# the Ram Lak filter
-	w_max = 2*np.pi / scale # scale since that's the 'width' of the X ray beam
+	w_max = 2*np.pi / (2*scale) # scale since that's the 'width' of the X ray beam
+	# Why 2 times scale? Nyquist, to prevent aliasing
+	
 	#ramlak = np.abs(np.linspace(-w_max, w_max, m))
 	
 
@@ -32,15 +34,18 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	for angle in range(angles):
 
 		signal = sinogram[angle]
-		padding = int((m-n)/2)     # padding the signal
+		pad_len = int((m-n)*0.5)     # padding the signal
 
-		signal = np.pad(signal, (0, 2*padding), constant_values = (0,0))
+		signal = np.pad(signal, (0, 2*pad_len), constant_values = (0,0))
 
 		f = fft(signal)
 		f = fftshift(f)		# fftshift needed to centre the frequencies
 
 		# adding a step to get the frequencies from the fft
-		freqs = fftfreq(f)
+		freqs = fftfreq(len(f))
+		freqs = freqs*(1/(2*scale))
+
+		freqs = fftshift(freqs)
 		freqs = [0 if np.abs(freq) > w_max else freq for freq in freqs]
 
 		#f = np.multiply(f, ramlak)
@@ -49,7 +54,7 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 		f = ifftshift(f)
 		f = ifft(f)
 
-		filtered[angle] = f[:-2*padding]	# don't consider the extra values at the end 
+		filtered[angle] = f[:-2*pad_len]	# don't consider the extra values at the end 
 
 
 	sinogram = filtered

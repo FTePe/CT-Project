@@ -55,9 +55,10 @@ def ct_detect(p, coeffs, depth, mas=10000):
 		detector_photons = attenuate(detector_photons, coeffs[m], depth[m])
 
 	# sum this over energies
-	detector_photons = np.sum(detector_photons, axis=0)
+	detector_photons = np.sum(detector_photons, axis=0)	   # gives the total intensities
 
 	# model noise
+
 
 	# minimum detection is one photon
 	detector_photons = np.clip(detector_photons, 1, None)
