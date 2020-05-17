@@ -18,36 +18,13 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	# Get dimensions and work out detection for just air of twice the side
 	# length (has to be the same as in ct_scan.py)
 	n = sinogram.shape[1]
-	angles = sinogram.shape[0]
 
-	# define the different variables used
-	depth_air = np.zeros(sinogram.shape)
-	values = np.zeros((sinogram.shape))
-	dummy = np.ones((n, n))
-
-	for angle in range(angles):
-
-		# get input image dimensions, and create a coordinate structure
-		xi, yi = np.meshgrid(np.arange(n) - (n/2) + 0.5, np.arange(n) - (n/2) + 0.5)
-
-		# Get rotated coordinates for interpolation
-		p = -math.pi / 2 - angle * math.pi / angles
-		x0 = xi * math.cos(p) - yi * math.sin(p) + (n/2) - 0.5
-		y0 = xi * math.sin(p) + yi * math.cos(p) + (n/2) - 0.5
-
-		interpolated = scipy.ndimage.map_coordinates(dummy, [y0, x0], order=1, mode='constant', cval=0, prefilter=False)
-
-		depth = np.sum(interpolated, axis = 0)
-
-		depth_air[angle] = 2*n - depth # this is the depth of air!
-
-	for angle in range(angles):
-		for i in range(n):
-			values[angle][i] = ct_detect(photons, material.coeff('Air'), depth_air[angle][i])
+	# getting the intensity value for a phantom of just air along any angle
+	value = ct_detect(photons, material.coeff('Air'), 2*n*scale, 1)[0]
 
 	 # getting the linear attenuated sinogram as per the formula
-	sinogram_att = -np.log( np.divide(sinogram, values) )
-	sinogram = sinogram_att
+	sinogram = sinogram/value
+	sinogram = -np.log(sinogram)
 
 	# perform calibration
 

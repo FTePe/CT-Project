@@ -23,7 +23,7 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	
 	# the Ram Lak filter
 	w_max = 2*np.pi / scale # scale since that's the 'width' of the X ray beam
-	ramlak = np.abs(np.linspace(-w_max, w_max, m))
+	#ramlak = np.abs(np.linspace(-w_max, w_max, m))
 	
 
 	filtered = np.zeros((angles, n))
@@ -39,7 +39,12 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 		f = fft(signal)
 		f = fftshift(f)		# fftshift needed to centre the frequencies
 
-		f = np.multiply(f, ramlak)
+		# adding a step to get the frequencies from the fft
+		freqs = fftfreq(f)
+		freqs = [0 if np.abs(freq) > w_max else freq for freq in freqs]
+
+		#f = np.multiply(f, ramlak)
+		f = np.multiply(f, np.abs(freqs)/(2*np.pi))
 
 		f = ifftshift(f)
 		f = ifft(f)
