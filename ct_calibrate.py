@@ -20,11 +20,8 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	# work out value of a sinogram point of air
 	v = ct_detect(photons, material.coeff('Air'), 2*n*scale,1)[0]
 	
-	# construct sinogram of air
-	sinogram_air = v * np.ones(sinogram.shape)
-	
 	# perform calibration
-	sinogram = -np.log( np.divide(sinogram, sinogram_air))
+	sinogram = -np.log( np.divide(sinogram, v))
 
 
 	return sinogram
