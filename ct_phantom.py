@@ -50,6 +50,7 @@ def ct_phantom(names, n, type, metal=None):
 		6 - disc and other sphere
 		7 - pelvic fixation pins
 		8 - resolution phantom
+		9 - disc made entirely out of water
 
 		For types 1-2, the whole phantom is of type 'metal', which defaults
 		to 'Soft Tissue' if not given. This must match one of the material
@@ -88,11 +89,21 @@ def ct_phantom(names, n, type, metal=None):
 			if value >= 1:
 				x[index] = tissue
 
+	elif type == 9:
+		# simple disc made entirely out of water
+		t = [1, 0.8, 0.8, 0.0, 0.0, 0]
+		x = phantom(t, n)
+
+		for index, value in np.ndenumerate(x):
+			if value >= 1:
+				x[index] = names.index('Water')
+
 	elif type == 2:
 		
 		# impulse for looking at resolution
 		x = np.zeros((n, n))
 		x[int(n / 2)][int(n / 2)] = tissue
+		#x[int(3*n / 4)][int(3*n / 4)] = tissue
 		
 	elif type == 8:
 

@@ -38,7 +38,6 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 
 	sinogram = mu_c
 	
-	
 
 	return sinogram
 
