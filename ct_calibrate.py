@@ -17,16 +17,18 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	# length (has to be the same as in ct_scan.py)
 	n = sinogram.shape[1]
 
-
+	#------------------------
 	# FIRST: Calibrate for air, convert intensity values to measured attenuation
 
 	# getting the intensity value for a phantom of just air along any angle
 	value = ct_detect(photons, material.coeff('Air'), 2*n*scale, 1)[0]
 
 	 # getting the linear attenuated sinogram as per the formula
-	sinogram = sinogram/value
+	sinogram = np.divide(sinogram, value)
 	sinogram = -np.log(sinogram)
 
+
+	#--------------------------------
 	"""
 	# SECOND: Calibrate for water
 	f = water_f(photons, material, n, scale, deg = 3)

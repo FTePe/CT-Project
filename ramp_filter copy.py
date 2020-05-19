@@ -35,17 +35,26 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 
 		# STEP 2: Calculate fft of the signal, and shift the coefficients to zero-centre them
 		f = fft(signal)
+		#f = fftshift(f)		# fftshift needed to centre the frequencies
 
 		# STEP 3: Calculate frequencies from length of signal, and scale them 
 		freqs = fftfreq(len(f))
+		#freqs = freqs*(1/(2*scale))   # since 1/2*scale is the 'sampling frequency'  # don't need 2  
 		freqs = freqs*(1/(scale))
+		
+		# now need to shift the frequencies to zero-centre them
+		#freqs = fftshift(freqs)
+		# and set all frequencies above w_max to zero
+		#freqs = [0 if np.abs(freq) > w_max else freq for freq in freqs]  # don't need
 
 		freqs[0] = freqs[1]/6  # the approximate correction
 
-		# STEP 4: Element wise multiplication of the FFT and the Ram lak filter 
+		# STEP 4: Element wise multiplication of the FFT and the Ram lak filter
+		#f = np.multiply(f, np.abs(freqs)/(2*np.pi))   # don't need the 2pi factor - since we already got the frequency in Hz
 		f = np.multiply(f, np.abs(freqs))
 
 		# STEP 5: Shift back to get the zeroeth element at the start of the array, then iFFT
+		#f = ifftshift(f)
 		f = ifft(f)
 
 		# STEP 6: extract the required signal values (remove the padding's effect)
