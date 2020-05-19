@@ -27,7 +27,7 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	sinogram = sinogram/value
 	sinogram = -np.log(sinogram)
 
-	
+	"""
 	# SECOND: Calibrate for water
 	f = water_f(photons, material, n, scale, deg = 3)
 	p = np.poly1d(f)
@@ -37,6 +37,7 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	mu_c = C*t_wm
 
 	sinogram = mu_c
+	"""
 	
 
 	return sinogram

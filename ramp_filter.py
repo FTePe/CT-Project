@@ -43,7 +43,7 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 
 		# adding a step to get the frequencies from the fft
 		freqs = fftfreq(len(f))
-		freqs = freqs*(1/(2*scale))
+		#freqs = freqs*(1/(2*scale))
 
 		freqs = fftshift(freqs)
 		freqs = [0 if np.abs(freq) > w_max else freq for freq in freqs]
