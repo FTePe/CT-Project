@@ -2,7 +2,7 @@ from ct_include import *
 import ct_include
 
 # this fake source should give us a single energy source at 0.2 MeV
-photons = fake_source(material.mev, 1.2, material.coeff('Aluminium'), thickness=0, method='ideal')
+photons = fake_source(material.mev, 1.2, coeff = None, thickness = 0, method='ideal')
 
 n = 256
 scale = 0.1

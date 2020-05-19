@@ -15,7 +15,7 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 		alpha for filtering. The output reconstruction is the same size as phantom."""
 
 
-	# convert source (photons per (mas, cm^2)) to photons # WHAT DOES THIS MEAN??
+	# convert source (photons per (mas, cm^2)) to photons 
 	#photons = source.photon(photons)
 
 	# create sinogram from phantom data, with received detector values

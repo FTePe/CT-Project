@@ -1,3 +1,5 @@
+"""
+
 import math
 import numpy as np
 import numpy.matlib
@@ -64,3 +66,5 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	sinogram = filtered
 	
 	return sinogram
+
+"""

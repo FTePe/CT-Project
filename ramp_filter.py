@@ -19,8 +19,6 @@ def ramp_filter(sinogram, scale, alpha=0.001):
 	#Set up filter to be at least twice as long as input
 	m = np.ceil(np.log(2*n-1) / np.log(2))
 	m = int(2 ** m)
-
-	w_max = 2*np.pi / (2*scale) # scale since that's the 'width' of the X ray beam
 	
 	filtered = np.zeros((angles, n))
 	

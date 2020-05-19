@@ -98,6 +98,11 @@ def ct_phantom(names, n, type, metal=None):
 			if value >= 1:
 				x[index] = names.index('Water')
 
+	elif type == 10:
+		# n x n phantom made entirely of water
+		x = np.zeros((n, n))
+		x = x + names.index('Water')
+
 	elif type == 2:
 		
 		# impulse for looking at resolution
