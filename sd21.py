@@ -15,9 +15,10 @@ ph_type = [1, 2]
 # ------------------------------------------------------
 
 # TASK 1
-# Experimenting with scan_and_reconstruct WITHOUT the filtering step for phantom 
+# Experimenting with scan_and_reconstruct WITHOUT and WITH the filtering step for phantom 
 # type 1 and 2. For this, we just reproduce the scan_and_reconstruct code below.
 
+plt.clf()
 for ph in ph_type:
 
     phantom = ct_phantom(material.name, n, ph)
@@ -39,5 +40,28 @@ for ph in ph_type:
     plt.savefig('results/week2/check_filter_reconstruct_%d.png' % (ph), bbox_inches='tight',pad_inches = 0)
 
 # ------------------------------------------------------------------
+plt.clf()
+
+# TASK 2 (EXPERIMENTing)
+# Doing the same thing as before, but this time looking at the sinogram
+# of a complex phantom
+
+ph = 6 # complex phantom
+angles = 256
+
+phantom = ct_phantom(material.name, n, ph)
+sinogram = ct_scan(photons, material, phantom, scale, angles)
+sinogram_att = ct_calibrate(photons, material, sinogram, scale, correct = False) # correct is water correction
+filtered = ramp_filter(sinogram_att, scale)
+
+fig, axarr = plt.subplots(1,2)
+axarr[0].axis('off')
+axarr[1].axis('off')
+f1 = axarr[0].imshow(sinogram_att, cmap = 'gray')
+f2 = axarr[1].imshow(filtered, cmap = 'gray')
+fig.tight_layout()
+plt.savefig('results/week2/check_filter_reconstruct_sinograms_phantom_%d.png' % (ph), bbox_inches='tight',pad_inches = 0)
+
+
 
 
