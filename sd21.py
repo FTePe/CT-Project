@@ -10,37 +10,34 @@ angles = 180
 #phantom = ct_phantom(material.name, n, 1)
 #reconstructed = scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001)
 
+ph_type = [1, 2]
+
 # ------------------------------------------------------
 
 # TASK 1
-# Experimenting with scan_and_reconstruct without the filtering step for phantom 
+# Experimenting with scan_and_reconstruct WITHOUT the filtering step for phantom 
 # type 1 and 2. For this, we just reproduce the scan_and_reconstruct code below.
-
-ph_type = [1, 2]
 
 for ph in ph_type:
 
     phantom = ct_phantom(material.name, n, ph)
     sinogram = ct_scan(photons, material, phantom, scale, angles)
-    sinogram_att = ct_calibrate(photons, material, sinogram, scale)
-    # no filtering step
-    bp = back_project(sinogram_att)
+    sinogram_att = ct_calibrate(photons, material, sinogram, scale, correct = False) # correct is water correction
+    filtered = ramp_filter(sinogram_att, scale)
 
-	# convert to Hounsfield Units
-	#bp_hu = hu(photons, material, bp, scale)       # this was not done at the time!
+    bp_without = back_project(sinogram_att)
+    bp_with = back_project(filtered)
 
-    fig, axarr = plt.subplots(1,2)
-
+    fig, axarr = plt.subplots(1,3)
+    axarr[0].axis('off')
+    axarr[1].axis('off')
+    axarr[2].axis('off')
     f1 = axarr[0].imshow(phantom, cmap = 'gray')
-    #plt.colorbar(f1, ax = f1, orientation='vertical')
-    plt.axis('off')
-
-    f2 = axarr[1].imshow(bp, cmap = 'gray')
-    #plt.colorbar(f2, ax = f1, orientation='vertical')
-    plt.axis('off')
-
+    f2 = axarr[1].imshow(bp_without, cmap = 'gray')
+    f3 = axarr[2].imshow(bp_with, cmap = 'gray')
     fig.tight_layout()
+    plt.savefig('results/week2/check_filter_reconstruct_%d.png' % (ph), bbox_inches='tight',pad_inches = 0)
 
-    plt.savefig('results/week2/no_filter_reconstruct_%d.png' % (ph))
+# ------------------------------------------------------------------
 
 

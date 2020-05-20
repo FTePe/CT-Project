@@ -13,6 +13,8 @@ def ct_detect(p, coeffs, depth, mas=10000):
 	mas defines the current-time-product which affects the noise distribution
 	for the linear attenuation"""
 
+	# NOTE: p has been updated to reflect scale and mas in scan_and_reconstruct (first step there)
+
 	# check p for number of energies
 	if type(p) != np.ndarray:
 		p = np.array([p])
@@ -56,8 +58,21 @@ def ct_detect(p, coeffs, depth, mas=10000):
 
 	# sum this over energies
 	detector_photons = np.sum(detector_photons, axis=0)	   # gives the total intensities
+	# this above line calculates the sum of photons over the range of energies for one sample
+	# ie what reached one detector
 
 	# model noise
+	# there are two sources of noise 
+	# 1. transmitted photons follow a poisson distribution
+	# 2. background radiation (additive fixed component) that scales with number of source photons
+
+	# model noise source 1 - transmitted scatter distribution
+	detector_photons = np.random.poisson(detector_photons)
+
+	# model noise source 2 - indirect scattering
+	#total_num_photons = np.sum(detector_photons)
+
+
 
 
 	# minimum detection is one photon
