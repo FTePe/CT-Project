@@ -24,7 +24,7 @@ plt.xlabel('Depth (cm)')
 plt.ylabel('Residual intensity value')
 plt.legend(['Water', 'Bone', 'Titanium'])
 
-plt.savefig('results/week1.real_source_attenuation.png')
+plt.savefig('results/week1/real_source_attenuation.png')
 
 plt.show()
 
@@ -48,6 +48,6 @@ plt.xlabel('Depth (cm)')
 plt.ylabel('Residual intensity value')
 plt.legend(['Water', 'Bone', 'Titanium'])
 
-plt.savefig('results/week1.fake_source_attenuation.png')
+plt.savefig('results/week1/fake_source_attenuation.png')
 
 plt.show()

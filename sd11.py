@@ -21,7 +21,9 @@ plt.xscale('log')
 plt.yscale('log')
 plt.xlabel('Energy (log scale)')
 plt.ylabel('Attenuation (log scale)')
+plt.savefig('results/week1/compton_photo_1.png')
 plt.show()
+
 
 
 x_mev = m.mev[:-1]
@@ -33,4 +35,7 @@ plt.xscale('log')
 #plt.yscale('log')
 plt.xlabel('Energy (log scale)')
 plt.ylabel('Attenuation (first derivative of log)')
+plt.savefig('results/week1/compton_photo_2.png')
 plt.show()
+
+

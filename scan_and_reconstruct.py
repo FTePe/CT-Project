@@ -31,7 +31,9 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	bp = back_project(filtered)
 
 	# convert to Hounsfield Units
-	bp_hu = hu(photons, material, bp, scale)
+	#bp_hu = hu(photons, material, bp, scale)
 
-	phantom = bp_hu
+	#phantom = bp_hu
+	phantom = bp
+
 	return phantom

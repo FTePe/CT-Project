@@ -30,15 +30,17 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 
 	#--------------------------------
 	
-	# SECOND: Calibrate for water
-	f = water_f(photons, material, n, scale, deg = 3)
-	p = np.poly1d(f)
+	if(correct==True):
+		# SECOND: Calibrate for water
+		f = water_f(photons, material, n, scale, deg = 3)
+		p = np.poly1d(f)
 
-	t_wm = p(sinogram)   # this is for all sinogram attenuation values
-	C = 1		# Scaling factor
-	mu_c = C*t_wm
+		t_wm = p(sinogram)   # this is for all sinogram attenuation values
+		C = 1		# Scaling factor
+		mu_c = C*t_wm
 
-	sinogram = mu_c
+		sinogram = mu_c
+		
 
 	return sinogram
 

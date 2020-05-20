@@ -6,7 +6,7 @@ photons = fake_source(material.mev, 1.2, coeff = None, thickness = 0, method='id
 
 n = 256
 scale = 0.1
-angles = 180
+angles = 256
 
 # use the simple disc phantom
 phantom = ct_phantom(material.name, n, 1)
@@ -18,4 +18,7 @@ sinogram_att = ct_calibrate(photons, material, sinogram, scale)
 filtered = ramp_filter(sinogram_att, scale)
 
 bp = back_project(filtered)
+
+plt.plot(bp[127])
+plt.show()
 
