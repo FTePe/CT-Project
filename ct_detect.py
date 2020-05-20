@@ -67,7 +67,7 @@ def ct_detect(p, coeffs, depth, mas=10000):
 	# 2. background radiation (additive fixed component) that scales with number of source photons
 
 	# model noise source 1 - transmitted scatter distribution
-	detector_photons = np.random.poisson(detector_photons)
+	# detector_photons = np.random.poisson(detector_photons)
 
 	# model noise source 2 - indirect scattering
 	#total_num_photons = np.sum(detector_photons)

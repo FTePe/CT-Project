@@ -36,7 +36,8 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 		p = np.poly1d(f)
 
 		t_wm = p(sinogram)   # this is for all sinogram attenuation values
-		C = 1		# Scaling factor
+		#C = 0.265	# real source, tissue disc
+		C = 0.13 # fake single source, water disc
 		mu_c = C*t_wm
 
 		sinogram = mu_c

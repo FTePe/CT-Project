@@ -20,11 +20,11 @@ plt.plot(np.log(y2), 'r') # this gives a straight line
 y3 = ct_detect(photons, material.coeff('Titanium'), depths, 1)
 plt.plot(np.log(y3), 'k') # this gives a straight line
 
-plt.xlabel('Depth (cm)')
-plt.ylabel('Residual intensity value')
+plt.xlabel('Depth (mm)')
+plt.ylabel('Residual intensity value (log)')
 plt.legend(['Water', 'Bone', 'Titanium'])
 
-plt.savefig('results/week1/real_source_attenuation.png')
+plt.savefig('results/week1/real_source_attenuation.png', bbox_inches='tight',pad_inches = 0)
 
 plt.show()
 
@@ -44,10 +44,10 @@ plt.plot(np.log(y2), 'r') # this gives a straight line
 y3 = ct_detect(photons, material.coeff('Titanium'), depths, 1)
 plt.plot(np.log(y3), 'k') # this gives a straight line
 
-plt.xlabel('Depth (cm)')
-plt.ylabel('Residual intensity value')
+plt.xlabel('Depth (mm)')
+plt.ylabel('Residual intensity value (log)')
 plt.legend(['Water', 'Bone', 'Titanium'])
 
-plt.savefig('results/week1/fake_source_attenuation.png')
+plt.savefig('results/week1/fake_source_attenuation.png', bbox_inches='tight',pad_inches = 0)
 
 plt.show()
