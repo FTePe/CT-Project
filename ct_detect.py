@@ -1,7 +1,7 @@
 import numpy as np
 from attenuate import attenuate
 
-def ct_detect(p, coeffs, depth, mas=10000):
+def ct_detect(p, coeffs, depth, mas=10000, do_noise = True):
 
 	"""ct_detect returns detector photons for given material depths.
 	y = ct_detect(p, coeffs, depth, mas) takes a source energy
@@ -65,15 +65,15 @@ def ct_detect(p, coeffs, depth, mas=10000):
 	# there are two sources of noise 
 	# 1. transmitted photons follow a poisson distribution
 	# 2. background radiation (additive fixed component) that scales with number of source photons
+	if(do_noise == True):
+		# model noise source 1 - transmitted scatter distribution
+		detector_photons = np.random.poisson(detector_photons)
 
-	# model noise source 1 - transmitted scatter distribution
-	# detector_photons = np.random.poisson(detector_photons)
+		# model noise source 2 - indirect scattering
+		background_noise = np.floor(p*0.001)
+		total_num_photons = detector_photons + background_noise
 
-	# model noise source 2 - indirect scattering
-	#total_num_photons = np.sum(detector_photons)
-
-
-
+		detector_photons = total_num_photons
 
 	# minimum detection is one photon
 	detector_photons = np.clip(detector_photons, 1, None)

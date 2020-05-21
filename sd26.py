@@ -14,17 +14,19 @@ photons2 = fake_source(material.mev, 1.2, coeff = None, thickness = 0, method='i
 ph = 6
 phantom = ct_phantom(material.name, n, ph)
 
-reconstructed1 = scan_and_reconstruct(photons1, material, phantom, scale, angles, correct = False, do_mas = False)
-reconstructed2 = scan_and_reconstruct(photons2, material, phantom, scale, angles, correct = False, do_mas = False)
+reconstructed1 = scan_and_reconstruct(photons1, material, phantom, scale, angles,\
+     correct = False, do_mas = False, do_noise = False)
+reconstructed2 = scan_and_reconstruct(photons2, material, phantom, scale, angles,\
+     correct = False, do_mas = False, do_noise = False)
 
 plt.clf()
 
 plt.axis('off')
-f1 = plt.imshow(reconstructed1, cmap = 'gray')
+f1 = plt.imshow(reconstructed1, cmap = 'gray', vmin = 0, vmax = np.amax(reconstructed1))
 plt.tight_layout()
 plt.savefig('results/week2/real_phantom_6_no_water_correction_.png', bbox_inches='tight',pad_inches = 0)
 
 plt.axis('off')
-f2 = plt.imshow(reconstructed2, cmap = 'gray')
+f2 = plt.imshow(reconstructed2, cmap = 'gray', vmin = 0, vmax = np.amax(reconstructed2))
 plt.tight_layout()
 plt.savefig('results/week2/fake_phantom_6_no_water_correction_.png', bbox_inches='tight',pad_inches = 0)

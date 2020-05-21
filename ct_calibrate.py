@@ -21,7 +21,7 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	# FIRST: Calibrate for air, convert intensity values to measured attenuation
 
 	# getting the intensity value for a phantom of just air along any angle
-	value = ct_detect(photons, material.coeff('Air'), 2*n*scale)[0]
+	value = ct_detect(photons, material.coeff('Air'), 2*n*scale, do_noise = False)[0]
 
 	 # getting the linear attenuated sinogram as per the formula
 	sinogram = np.divide(sinogram, value)
@@ -32,6 +32,7 @@ def ct_calibrate(photons, material, sinogram, scale, correct=True):
 	
 	if(correct==True):
 		# SECOND: Calibrate for water
+		print("Water!")
 		f = water_f(photons, material, n, scale, deg = 3)
 		p = np.poly1d(f)
 
@@ -51,9 +52,9 @@ def water_f(photons, material, side_length, scale, deg):
 
 	#mu_w = ct_detect(photons, material.coeff('Water'), t)  # note! This gives only the intensity
 
-	I_tot = ct_detect(photons, material.coeff('Water'), t) # recorded intensity
+	I_tot = ct_detect(photons, material.coeff('Water'), t, do_noise = False) # recorded intensity
 	# getting the intensity value for a phantom of just air along any angle
-	value = ct_detect(photons, material.coeff('Air'), 2*side_length*scale, 1)[0]
+	value = ct_detect(photons, material.coeff('Air'), 2*side_length*scale, 1, do_noise = False)[0]
 	I = I_tot/value
 	mu_w = -np.log(I)
 

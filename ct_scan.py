@@ -5,7 +5,7 @@ from ct_detect import ct_detect
 import math
 import sys
 
-def ct_scan(photons, material, phantom, scale, angles, mas=10000):
+def ct_scan(photons, material, phantom, scale, angles, mas=10000, do_noise=True):
 
 	"""simulate CT scanning of an object
 	scan = ct_scan(photons, material, phantom, scale, angles, mas) takes a phantom
@@ -62,8 +62,8 @@ def ct_scan(photons, material, phantom, scale, angles, mas=10000):
 		# scale the depth appropriately and calculate detections for this set of
 		# materials
 		depth*= scale
-	
-		scan[angle] = ct_detect(photons, material.coeffs, depth, mas)
+
+		scan[angle] = ct_detect(photons, material.coeffs, depth, mas, do_noise)
 	
 	sys.stdout.write("\n")
 

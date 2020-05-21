@@ -22,7 +22,7 @@ plt.clf()
 for ph in ph_type:
 
     phantom = ct_phantom(material.name, n, ph)
-    sinogram = ct_scan(photons, material, phantom, scale, angles)
+    sinogram = ct_scan(photons, material, phantom, scale, angles, do_noise = False)
     sinogram_att = ct_calibrate(photons, material, sinogram, scale, correct = False) # correct is water correction
     filtered = ramp_filter(sinogram_att, scale)
 
@@ -34,8 +34,8 @@ for ph in ph_type:
     axarr[1].axis('off')
     axarr[2].axis('off')
     f1 = axarr[0].imshow(phantom, cmap = 'gray')
-    f2 = axarr[1].imshow(bp_without, cmap = 'gray')
-    f3 = axarr[2].imshow(bp_with, cmap = 'gray')
+    f2 = axarr[1].imshow(bp_without, cmap = 'gray')#, vmin = 0, vmax = np.amax(bp_without))
+    f3 = axarr[2].imshow(bp_with, cmap = 'gray')#,vmin = 0, vmax = np.amax(bp_with))
     fig.tight_layout()
     plt.savefig('results/week2/check_filter_reconstruct_%d.png' % (ph), bbox_inches='tight',pad_inches = 0)
 
@@ -50,7 +50,7 @@ ph = 6 # complex phantom
 angles = 256
 
 phantom = ct_phantom(material.name, n, ph)
-sinogram = ct_scan(photons, material, phantom, scale, angles)
+sinogram = ct_scan(photons, material, phantom, scale, angles, do_noise = False)
 sinogram_att = ct_calibrate(photons, material, sinogram, scale, correct = False) # correct is water correction
 filtered = ramp_filter(sinogram_att, scale)
 

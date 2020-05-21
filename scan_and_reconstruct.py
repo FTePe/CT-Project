@@ -6,7 +6,7 @@ from back_project import *
 from hu import *
 
 def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, alpha=0.001, \
-	do_filtering = True, do_mas = True, correct = True, do_hu = True):
+	do_filtering = True, do_mas = True, correct = True, do_hu = True, do_noise = True):
 
 	""" Simulation of the CT scanning process
 		reconstruction = scan_and_reconstruct(photons, material, phantom, scale, angles, mas, alpha)
@@ -18,10 +18,11 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 
 	# convert source (photons per (mas, cm^2)) to photons 
 	if(do_mas==True):
+		print("do_mas true!")
 		photons = (photons*mas)*(scale**2)
 
 	# create sinogram from phantom data, with received detector values
-	sinogram = ct_scan(photons, material, phantom, scale, angles, mas)
+	sinogram = ct_scan(photons, material, phantom, scale, angles, mas, do_noise)
 
 	# convert detector values into calibrated attenuation values
 	sinogram_att = ct_calibrate(photons, material, sinogram, scale, correct)
@@ -29,9 +30,13 @@ def scan_and_reconstruct(photons, material, phantom, scale, angles, mas=10000, a
 	# Filtering
 	if(do_filtering==True):
 		filtered = ramp_filter(sinogram_att, scale)
+		sinogram_att = filtered
+	
+	
+	bp = back_project(sinogram_att)
 
 	# Back-projection
-	bp = back_project(filtered)
+	
 
 	# convert to Hounsfield Units
 	
