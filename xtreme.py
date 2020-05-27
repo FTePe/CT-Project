@@ -7,6 +7,8 @@ import sys
 from ramp_filter import *
 from back_project import *
 from create_dicom import *
+from hu import *
+from material import *
 
 class Xtreme(object):
     def __init__(self, file):
@@ -264,8 +266,14 @@ class Xtreme(object):
         frameuid = pydicom.uid.generate_uid()
         time = datetime.datetime.now()
 
-        # main loop over each z-fan
-        for fan in range(0, self.scans, self.fan_scans):
+        # main loop over each z-fan # iterating along the z axis
+        # 
+        fan_start = self.fan_scans*4
+        fan_end = self.scans - self.fan_scans*4
+        fan_interval = self.fan_scans
+
+        #for fan in range(0, self.scans, self.fan_scans):
+        for fan in range(fan_start, fan_end, fan_interval):
             if method is 'fdk':
                 
                 # correct reconstruction using FDK method, self.fan_scans scans at a time
@@ -278,8 +286,40 @@ class Xtreme(object):
                     if (scan<self.scans):
 
 						# reconstruct scan
+                        # convert the fan-method scan/sinogram to parallel sinogram
+
+                        f, fmin, fmax =  self.get_rsq_slice(scan)
+
+                        # STEP 1: Convert the shape of fmin and fmax to (1, 504)
+                        fmin = fmin[np.newaxis, :]
+                        fmax = fmax[np.newaxis, :]
+
+                        # STEP 2: We need to remove the background noise (fmin) from the air phantom (fmax) and object (f)
+                        fmax = fmax - fmin
+                        #fmax[fmax<0] = 0 # this will likely never happen
+                        f = f - fmin
+                        f[f<0] = 10
+
+                        # STEP 3: Calibrate f wrt fmax
+                        #f = (f / fmax2) # calibrating with the 'air' phantom
+                        f = (f / fmax)
+                        f = -np.log(f) # how to handle the no object calibration
+                        #f = f*self.scale # to convert the results of the sinogram to reflect scale.
+
+                        p = self.fan_to_parallel(f) # this gets the parallel sinogram
+
+                        filtered = ramp_filter(p, self.scale*0.1) # currently alpha is used as default = 0.001
+                        # self.scale*0.1 because we need to convert mm to cm (that's what the ramlak filter uses)
+
+                        bp = back_project(filtered)
+
+                        bp_hu = hu(fmax, Material(), bp, self.scale*0.1)
 
 						# save as dicom file
+                        bp_dicom = create_dicom(bp_hu, file, self.scale*0.1, sz = None, f = z,\
+                            study_uid = studyuid, series_uid = seriesuid, frame_uid = frameuid,\
+                                storage_directory='Dicom Data')
+                                
                         z = z + 1
 
         return
